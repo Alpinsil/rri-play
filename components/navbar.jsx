@@ -6,7 +6,7 @@ export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false);
   return (
     <>
-      <nav className="relative flex items-center justify-between px-2 py-3 bg-[#191624] mb-3">
+      <nav className="relative flex items-center justify-evenly px-2 py-3 bg-[#191624] mb-3">
         <Image src="/rri_logo.svg" width={138.91} height={83} alt="logo RRI" className="w-24" />
         <div className="bg-[#d9d9d91a] w-[627px] h-[46px] rounded-xl mx-auto relative flex">
           <i className="fa-solid fa-magnifying-glass text-white lg:text-2xl text-lg ml-4 mt-2"></i>
