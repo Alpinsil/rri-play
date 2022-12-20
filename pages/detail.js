@@ -8,16 +8,18 @@ import Image from 'next/image';
 const Detail = () => {
   const [data, setData] = useState('');
   const [bookmark, setBookmark] = useState(false);
-  const [isPlaying, setIsPlaying] = useState('');
+  const [isPlaying, setIsPlaying] = useState();
   const router = useRouter();
   useEffect(() => {
     setData(router.query);
     const storage = JSON.parse(localStorage.getItem('rri-audiobook-sumenep'));
-    const isBookmark = storage.filter((data) => data.id == router.query.id);
-    if (isBookmark.length) {
-      setBookmark(true);
-    } else {
-      setBookmark(false);
+    if (storage) {
+      const isBookmark = storage.filter((data) => data.id == router.query.id);
+      if (isBookmark.length) {
+        setBookmark(true);
+      } else {
+        setBookmark(false);
+      }
     }
   }, [router.query]);
 

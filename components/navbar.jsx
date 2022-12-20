@@ -22,15 +22,21 @@ export default function Navbar() {
       </nav>
       <div className={`w-[233px] h-[185px] absolute bg-[#260A8D] right-[30px] top-[120px] ${navbarOpen ? 'flex' : 'hidden'} rounded-xl flex-wrap z-[99999]`}>
         <Link href="/">
-          <div className="text-white flex gap-6 items-center absolute mt-8 ml-[90px] cursor-pointer">
+          <div className="text-white flex gap-6 items-center mt-8 ml-[90px] cursor-pointer">
             <h4 className="font-Robotto text-xl">Beranda</h4>
             <i className="fa-solid fa-house text-xl"></i>
           </div>
         </Link>
         <Link href="/bookmark">
-          <div className="text-white flex gap-6 items-center absolute mt-[108px] ml-[100px] cursor-pointer">
+          <div className="text-white flex gap-6 items-center ml-[100px] cursor-pointer">
             <h4 className="font-Robotto text-xl">Favorit </h4>
             <i className="fa-solid fa-bookmark text-xl"></i>
+          </div>
+        </Link>
+        <Link href="/admin">
+          <div className="text-white flex gap-6 items-center ml-[100px] cursor-pointer">
+            <h4 className="font-Robotto text-xl">Admin </h4>
+            <i className="fa-solid fa-user text-xl"></i>
           </div>
         </Link>
       </div>
