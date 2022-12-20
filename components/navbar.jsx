@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false);
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center w-full">
       <nav className="relative flex items-center justify-evenly px-2 py-3 bg-[#191624] z-50 w-full">
         <Image src="/rri_logo.svg" width={138.91} height={83} alt="logo RRI" className="w-24" priority />
         <div className="bg-[#d9d9d91a] w-[627px] h-[46px] rounded-xl mx-auto relative flex">
@@ -20,6 +20,7 @@ export default function Navbar() {
           </button>
         </div>
       </nav>
+      
       <div className={`w-[233px] h-[185px] absolute bg-[#260A8D] right-[30px] top-[120px] ${navbarOpen ? 'flex' : 'hidden'} rounded-xl flex-wrap z-[99999]`}>
         <Link href="/">
           <div className="text-white flex gap-6 items-center mt-8 ml-[90px] cursor-pointer">
