@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export default function Chaptercard({ desc, title, number, isPlaying, onClick, id }) {
   return (
-    <div className="rounded-2xl w-[300px] h-[130px] flex items-center flex-wrap justify-center bg-slate-700 mb-36 relative text-center">
+    <div className="rounded-2xl w-[300px] h-[130px] flex items-center flex-wrap justify-center bg-slate-700 relative text-center">
       <div className="text-white w-full">
         <h1>
           {number + 1} - {title}

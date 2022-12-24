@@ -80,7 +80,7 @@ const Detail = () => {
 
       <div className="w-full">
         <h2 className="text-white text-center text-2xl mt-12"> Chapter</h2>
-        <div className="flex justify-center mt-7 gap-10 flex-wrap w-[800px] mx-auto">
+        <div className="flex justify-center mt-7 gap-10 flex-wrap w-full mx-auto">
           {arr.map((ar, i) => (
             <Chaptercard key={ar.id} number={i} title={ar.title} desc={ar.desc} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} />
           ))}
