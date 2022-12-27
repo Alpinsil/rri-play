@@ -3,3 +3,66 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.player_container {
+  width: 50%;
+  padding: 1rem;
+  border: 1px solid rgb(141, 141, 141);
+  border-radius: 10px;
+  color: rgb(218, 218, 218);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: black;
+}
+
+.player_container>* {
+  padding: 1rem 0;
+  color: rgb(202, 202, 202);
+}
+
+.player_container .title {
+  font-size: inherit;
+}
+
+.player_container .navigation {
+  width: 100%;
+}
+
+.player_container .navigation .navigation_wrapper {
+  min-width: 100%;
+  background-color: #777777c7;
+  height: 5px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.player_container .navigation .navigation_wrapper .seek_bar {
+  width: 0;
+  height: 100%;
+  background-color: rgb(24, 128, 3);
+  border-radius: 30px;
+}
+
+.player_container .controls {
+  font-size: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.player_container .controls .btn_action {
+  font-size: 2rem;
+  margin: 0 1rem;
+  cursor: pointer;
+}
+
+.player_container .controls .btn_action:hover {
+  color: white;
+}
+
+.player_container .controls .pp {
+  font-size: 4rem;
+}
+
+/*# sourceMappingURL=player.css.map */

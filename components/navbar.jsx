@@ -4,24 +4,46 @@ import Link from 'next/link';
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false);
+  const navLinks = [
+    { link: '/', nama: 'Beranda' },
+    { link: '/bookmark', nama: 'Bookmark' },
+    { link: '/admin', nama: 'Admin' },
+  ];
+  const sosmed = [
+    { hoverColor: 'group-hover:text-[#1DA1F2]', link: '/', icon: 'fa-twitter' },
+    { hoverColor: 'group-hover:text-[#FF0000]', link: '/', icon: 'fa-youtube' },
+    { hoverColor: 'group-hover:text-[#E1306C]', link: '/', icon: 'fa-instagram' },
+  ];
   return (
     <div className="flex justify-center w-full">
-      <nav className="relative flex items-center justify-evenly px-2 py-3 bg-[#191624] z-50 w-full">
+      <nav className="relative flex items-center lg:justify-evenly justify-between px-2 py-3 bg-[#191624] z-50 w-full">
         <Image src="/rri_logo.svg" width={138.91} height={83} alt="logo RRI" className="w-24" priority />
-        <div className="bg-[#d9d9d91a] w-[627px] h-[46px] rounded-xl mx-auto relative flex">
-          <i className="fa-solid fa-magnifying-glass text-white lg:text-2xl text-lg ml-4 mt-2"></i>
-          <input type="text" className="border-none bg-transparent w-[97%] h-full outline-none pl-3 rounded-xl text-white lg:text-xl text-md " />
+        <div className=" rounded-xl mx-auto relative lg:flex items-center hidden">
+          <ul className="block lg:flex">
+            {navLinks.map((nav) => (
+              <li className="group" key={nav.nama}>
+                <Link href={nav.link} className="text-lg text-white py-2 mx-8 group-hover:text-[#74b6ef] flex">
+                  {nav.nama}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="self-center flex text-white items-center gap-2 lg:mr-6 ml-3 lg:ml-0 mr-2">
-          <h4 className="hidden lg:block">Hello Alvin</h4>
-          <div className="lg:w-[43px] w-[25px] h-[25px] lg:h-[43px] bg-[#D9D9D9] lg:rounded-full cursor-pointer hidden lg:flex" onClick={() => setNavbarOpen(!navbarOpen)}></div>
+          <div className="flex gap-4 mr-3">
+            {sosmed.map((n) => (
+              <Link key={n.icon} href={n.link} className="group ">
+                <i className={`fa-brands ${n.icon} text-white text-2xl ${n.hoverColor}`}></i>
+              </Link>
+            ))}
+          </div>
           <button className="lg:hidden flex" onClick={() => setNavbarOpen(!navbarOpen)}>
             <i className="fa-solid fa-bars text-2xl"></i>
           </button>
         </div>
       </nav>
-      
-      <div className={`w-[233px] h-[185px] absolute bg-[#260A8D] right-[30px] top-[120px] ${navbarOpen ? 'flex' : 'hidden'} rounded-xl flex-wrap z-[99999]`}>
+
+      <div className={`w-[233px] h-[185px] absolute bg-[#260A8D] right-[30px] top-[120px] ${navbarOpen ? 'flex' : 'hidden'} lg:hidden flex rounded-xl flex-wrap z-[99999]`}>
         <Link href="/">
           <div className="text-white flex gap-6 items-center mt-8 ml-[90px] cursor-pointer">
             <h4 className="font-Robotto text-xl">Beranda</h4>
