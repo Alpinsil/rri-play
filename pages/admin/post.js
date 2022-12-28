@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Formbook from '../../components/formbook';
+import { useRouter } from 'next/router';
+import arr from '../api/data';
 
 export default function MyForm() {
   const [sformData, setFormData] = useState({});
@@ -15,6 +17,14 @@ export default function MyForm() {
     }
   };
 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (localStorage.getItem('login-access') !== arr) {
+      router.push('/login');
+    }
+  });
+
   const handleSubmit = (event) => {
     setIsLoading(true);
     event.preventDefault();
@@ -24,10 +34,12 @@ export default function MyForm() {
       formData.set(key, value);
     }
 
+    const token = localStorage.getItem('key-jwt');
+
     fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books', {
       method: 'POST',
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVVBEMDAwMDEiLCJyb2xlIjoidXBsb2FkZXIiLCJleHAiOjE2NzIxNDY2NDF9.PXnt5vXolBU-KNNdoRY8J2GLLd9_nfjU9uR6LPOFi64',
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     })
@@ -43,7 +55,7 @@ export default function MyForm() {
       <Head>
         <title>Create new Book</title>
       </Head>
-   
+
       <Formbook isLoading={isLoading} handleChange={handleChange} handleSubmit={handleSubmit} />
     </>
   );

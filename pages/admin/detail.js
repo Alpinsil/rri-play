@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Chaptercard from '../../components/chaptercard';
 import Link from 'next/link';
 import Formbook from '../../components/formbook';
+import { useRouter } from 'next/router';
+import arr from '../api/data';
 
 export default function MyComponent(props) {
   const { data, id } = props;
@@ -14,6 +16,13 @@ export default function MyComponent(props) {
   const [category, setCategory] = useState(data.category);
 
   const content = { title, setTitle, summary, setSummary, category, setCategory };
+
+  const router = useRouter();
+  useEffect(() => {
+    if (localStorage.getItem('login-access') !== arr) {
+      router.push('/login');
+    }
+  });
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -32,16 +41,17 @@ export default function MyComponent(props) {
       formData.set(key, value);
     }
 
+    const token = localStorage.getItem('key-jwt');
+
     fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}/update`, {
       method: 'PUT',
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVVBEMDAwMDEiLCJyb2xlIjoidXBsb2FkZXIiLCJleHAiOjE2NzIxNDY2NDF9.PXnt5vXolBU-KNNdoRY8J2GLLd9_nfjU9uR6LPOFi64',
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setIsLoading(false);
       });
   };
@@ -52,21 +62,20 @@ export default function MyComponent(props) {
     if (IconPlay) {
       setIsPlaying(false);
     }
-    console.log(isPlaying ? 'true' : 'false');
   };
 
   const handleDeleteClick = (id) => {
-    const hello = data.id;
+    const token = localStorage.getItem('key-jwt');
     fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${data.id}/chapters/${id}/delete`, {
       method: 'DELETE',
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVVBEMDAwMDEiLCJyb2xlIjoidXBsb2FkZXIiLCJleHAiOjE2NzIxNDY2NDF9.PXnt5vXolBU-KNNdoRY8J2GLLd9_nfjU9uR6LPOFi64',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        console.log(hello + '___' + id);
+        router.reload();
       });
   };
 
@@ -75,8 +84,6 @@ export default function MyComponent(props) {
       <Head>
         <title>edit detail</title>
       </Head>
-
-  
 
       <div className="flex flex-wrap justify-center mx-auto mb-8">
         <Formbook content={content} isLoading={isLoading} handleSubmit={handleSubmit} handleChange={handleChange} />

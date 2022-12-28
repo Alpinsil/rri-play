@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import arr from '../api/data';
 
 export default function MyForm(props) {
   const [sformData, setFormData] = useState({});
@@ -23,6 +24,12 @@ export default function MyForm(props) {
     }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem('login-access') !== arr) {
+      router.push('/login');
+    }
+  });
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -33,10 +40,12 @@ export default function MyForm(props) {
       formData.set(key, value);
     }
 
+    const token = localStorage.getItem('key-jwt');
+
     fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}/chapters`, {
       method: 'POST',
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVVBEMDAwMDEiLCJyb2xlIjoidXBsb2FkZXIiLCJleHAiOjE2NzIxNDY2NDF9.PXnt5vXolBU-KNNdoRY8J2GLLd9_nfjU9uR6LPOFi64',
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     })

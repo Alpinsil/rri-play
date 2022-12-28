@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Chaptercard from '../components/chaptercard';
-import Link from 'next/link';
 import Image from 'next/image';
 
 export default function MyComponent(props) {
@@ -9,6 +8,7 @@ export default function MyComponent(props) {
   const [error, setError] = useState();
   const [bookmark, setBookmark] = useState();
   const [isPlaying, setIsPlaying] = useState();
+  const [isSongPause, setIsSongPause] = useState(false);
 
   const handleError = () => {
     setError('An error occurred while loading the image');
@@ -51,24 +51,11 @@ export default function MyComponent(props) {
   const onClickPlay = (id, IconPlay) => {
     const isPlayingData = data.chapters ? data.chapters.filter((ar) => ar.id === id) : [];
     setIsPlaying(isPlayingData[0].id);
+    setIsSongPause([!IconPlay, isPlayingData[0].id]);
+    console.log(isSongPause);
     if (IconPlay) {
       setIsPlaying(false);
     }
-  };
-
-  const handleDeleteClick = (id) => {
-    const hello = data.id;
-    fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${data.id}/chapters/${id}/delete`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVVBEMDAwMDEiLCJyb2xlIjoidXBsb2FkZXIiLCJleHAiOjE2NzIxNDY2NDF9.PXnt5vXolBU-KNNdoRY8J2GLLd9_nfjU9uR6LPOFi64',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        console.log(hello + '___' + id);
-      });
   };
 
   return (
@@ -101,7 +88,7 @@ export default function MyComponent(props) {
             {data.chapters ? (
               data.chapters.map((ar, i) => (
                 <div key={ar.id} className="relative">
-                  <Chaptercard number={i} title={ar.title} desc={ar.desc} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} setIsPlaying={setIsPlaying} mediaPath={ar.media_path} />
+                  <Chaptercard number={i} title={ar.title} desc={ar.desc} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} setIsPlaying={setIsPlaying} mediaPath={ar.media_path} isSongChange={isSongPause} />
                 </div>
               ))
             ) : (

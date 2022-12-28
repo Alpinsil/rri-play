@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { songsdata } from '../components/music/audio';
 
-export default function Chaptercard({ desc, title, number, isPlaying, onClick, id, setIsPlaying, mediaPath }) {
+export default function Chaptercard({ desc, title, number, isPlaying, onClick, id, setIsPlaying, mediaPath, isSongPause }) {
   const music = songsdata.filter((song, i) => i == id);
   const [songTime, setSongTime] = useState(0);
   const audioElem = useRef();
@@ -15,9 +15,8 @@ export default function Chaptercard({ desc, title, number, isPlaying, onClick, i
       audioElem.current.play();
     } else {
       audioElem.current.pause();
-      audioElem.current.currentTime = 0;
     }
-  }, [id, isPlaying]);
+  }, [id, isPlaying, isSongPause]);
 
   const onPlaying = () => {
     const duration = audioElem.current.duration;
@@ -29,7 +28,6 @@ export default function Chaptercard({ desc, title, number, isPlaying, onClick, i
       setIsPlaying(!isPlaying);
     } else {
       setSongTime((ct / duration) * 100);
-      console.log(songTime);
     }
   };
 
@@ -52,6 +50,7 @@ export default function Chaptercard({ desc, title, number, isPlaying, onClick, i
         </div>
       </div>
       <audio ref={audioElem} src={mediaPath || music[0].url} onTimeUpdate={onPlaying} />
+
       <i
         className={`fa-solid ${isPlaying === id ? 'fa-pause' : 'fa-play'} border-black text-white text-5xl shadow-xl cursor-pointer text-center group-hover:opacity-100 transition-all duration-300 `}
         onClick={() => {

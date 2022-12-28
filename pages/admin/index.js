@@ -1,29 +1,41 @@
 import Image from 'next/image';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import arr from '../api/data';
+import { useRouter } from 'next/router';
 
-export const getStaticProps = async () => {
+export async function getServerSideProps() {
   const res = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books');
   const books = await res.json();
 
   return {
     props: { books },
   };
-};
+}
 
 export default function Index({ books }) {
+  const router = useRouter();
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    if (localStorage.getItem('login-access') !== arr) {
+      router.push('/login');
+    }
+  });
+
   const { data } = books;
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem('key-jwt');
     setIsLoading(true);
     if (id) {
       try {
         const res = await fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}/delete`, {
           method: 'DELETE',
           headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RlIjoiVVBEMDAwMDEiLCJyb2xlIjoidXBsb2FkZXIiLCJleHAiOjE2NzIxNDY2NDF9.PXnt5vXolBU-KNNdoRY8J2GLLd9_nfjU9uR6LPOFi64',
+            Authorization: `Bearer ${token}`,
           },
         });
         if (res) {
@@ -38,10 +50,18 @@ export default function Index({ books }) {
     }
   };
 
+  const handleError = () => {
+    setError('An error occurred while loading the image');
+  };
+
+  const handleLoad = () => {
+    setError(null);
+  };
+
   return (
     <>
       <Head>
-        <title>{data[0].title}</title>
+        <title>Admin Page</title>
       </Head>
       <Link href="/admin/post">
         <button className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">Create New Audiobook</button>
@@ -49,7 +69,7 @@ export default function Index({ books }) {
       <div className="w-full mx-auto flex gap-6 mt-4 justify-center mb-4 flex-wrap">
         {data.map((book) => (
           <div className="max-w-sm w-full lg:w-1/2 border  rounded-lg shadow-md bg-gray-800 border-gray-700 flex items-center flex-wrap" key={book.id}>
-            <Image className="rounded-t-lg mx-auto h-[100px] w-[80px]" src={book.cover_image || '/Image_1.webp'} alt={book.title} width={100} height={150} />
+            <Image className="rounded-t-lg mx-auto h-[100px] w-[80px]" src={error ? '/Image_1.webp' : book.cover_image} alt={book.title} width={100} height={150} onError={handleError} onLoad={handleLoad} />
             <div className="p-5">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{book.title}</h5>
               <p className="mb-3 font-normal text-gray-400">{book.category}</p>
