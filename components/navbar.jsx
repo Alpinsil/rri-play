@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false);
+  const [login, setLogin] = useState(false);
   const navLinks = [
     { link: '/', nama: 'Beranda' },
     { link: '/bookmark', nama: 'Bookmark' },
-    { link: '/admin', nama: 'Admin' },
   ];
+
+  useEffect(() => {
+    if (sessionStorage.getItem('login-access') === arr) {
+      setLogin(true);
+    }
+  }, [setLogin]);
   const sosmed = [
     { hoverColor: 'group-hover:text-[#1DA1F2]', link: '/', icon: 'fa-twitter' },
     { hoverColor: 'group-hover:text-[#FF0000]', link: '/', icon: 'fa-youtube' },
@@ -27,6 +33,11 @@ export default function Navbar() {
                 </Link>
               </li>
             ))}
+            <li className="group">
+              <Link href={login ? '/admin' : '/login'} className="text-lg text-white py-2 mx-8 group-hover:text-[#74b6ef] flex">
+                {login ? 'admin' : 'login'}
+              </Link>
+            </li>
           </ul>
         </div>
         <div className="self-center flex text-white items-center gap-2 lg:mr-6 ml-3 lg:ml-0 mr-2">
