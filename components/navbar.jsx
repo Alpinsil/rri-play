@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import arr from '../pages/api/data';
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false);
