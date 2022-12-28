@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import arr from '../api/data';
+import Navbar from '../../components/navbar';
 
 export default function MyForm(props) {
   const [sformData, setFormData] = useState({});
@@ -61,6 +62,7 @@ export default function MyForm(props) {
       <Head>
         <title>Add New Chapter</title>
       </Head>
+      <Navbar />
       <Link href={{ pathname: 'detail', query: { id } }} className="fixed text-white text-2xl top-32 left-80 z-50 bg-sky-900 px-3 py-2 rounded-md hover:bg-sky-500 cursor-pointer">
         <i className="fa-solid fa-arrow-left"></i>
       </Link>

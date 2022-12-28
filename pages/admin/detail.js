@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Formbook from '../../components/formbook';
 import { useRouter } from 'next/router';
 import arr from '../api/data';
+import Navbar from '../../components/navbar';
 
 export default function MyComponent(props) {
   const { data, id } = props;
@@ -84,7 +85,7 @@ export default function MyComponent(props) {
       <Head>
         <title>edit detail</title>
       </Head>
-
+      <Navbar />
       <div className="flex flex-wrap justify-center mx-auto mb-8">
         <Formbook content={content} isLoading={isLoading} handleSubmit={handleSubmit} handleChange={handleChange} />
 

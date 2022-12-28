@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Chaptercard from '../components/chaptercard';
 import Image from 'next/image';
+import Navbar from '../components/navbar';
 
 export default function MyComponent(props) {
   const { data, id } = props;
@@ -63,6 +64,7 @@ export default function MyComponent(props) {
       <Head>
         <title>edit detail</title>
       </Head>
+      <Navbar />
 
       <div className="flex flex-wrap justify-center mx-auto mb-8">
         <div className="relative w-full h-[331px] flex justify-center overflow-hidden">

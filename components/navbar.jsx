@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import arr from '../pages/api/data';
+import { useRouter } from 'next/router';
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [login, setLogin] = useState(false);
+  const [nama, setNama] = useState('admin');
   const navLinks = [
     { link: '/', nama: 'Beranda' },
     { link: '/bookmark', nama: 'Bookmark' },
   ];
+  const router = useRouter();
 
   useEffect(() => {
     if (sessionStorage.getItem('login-access') === arr) {
@@ -21,6 +24,15 @@ export default function Navbar() {
     { hoverColor: 'group-hover:text-[#FF0000]', link: '/', icon: 'fa-youtube' },
     { hoverColor: 'group-hover:text-[#E1306C]', link: '/', icon: 'fa-instagram' },
   ];
+
+  const handleClick = () => {
+    setNama('login');
+    sessionStorage.removeItem('jwt-key');
+    sessionStorage.removeItem('login-access');
+    setLogin(false);
+    router.push('/login');
+  };
+
   return (
     <div className="flex justify-center w-full">
       <nav className="relative flex items-center lg:justify-evenly justify-between px-2 py-3 bg-[#191624] z-50 w-full">
@@ -39,6 +51,11 @@ export default function Navbar() {
                 {login ? 'admin' : 'login'}
               </Link>
             </li>
+            <li className={`group ${!login && 'hidden'}`}>
+              <button className="text-lg text-white py-2 mx-8 group-hover:text-[#74b6ef] flex" onClick={() => handleClick()}>
+                logout
+              </button>
+            </li>
           </ul>
         </div>
         <div className="self-center flex text-white items-center gap-2 lg:mr-6 ml-3 lg:ml-0 mr-2">
@@ -55,7 +72,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <div className={`w-[233px] h-[185px] absolute bg-[#260A8D] right-[30px] top-[120px] ${navbarOpen ? 'flex' : 'hidden'} lg:hidden flex rounded-xl flex-wrap z-[99999]`}>
+      <div className={`w-[233px] h-[185px] absolute bg-[#260A8D] right-[30px] top-[120px] ${navbarOpen ? 'flex' : 'hidden'} lg:hidden rounded-xl flex-wrap z-[99999] justify-center`}>
         <Link href="/">
           <div className="text-white flex gap-6 items-center mt-8 ml-[90px] cursor-pointer">
             <h4 className="font-Robotto text-xl">Beranda</h4>
@@ -68,10 +85,16 @@ export default function Navbar() {
             <i className="fa-solid fa-bookmark text-xl"></i>
           </div>
         </Link>
-        <Link href="/admin">
+        <Link href={login ? '/admin' : '/login'}>
           <div className="text-white flex gap-6 items-center ml-[100px] cursor-pointer">
-            <h4 className="font-Robotto text-xl">Admin </h4>
+            <h4 className="font-Robotto text-xl">{login ? 'admin' : 'login'}</h4>
             <i className="fa-solid fa-user text-xl"></i>
+          </div>
+        </Link>
+        <Link href="/login" className={`group ${!login && 'hidden'}`} onClick={() => handleClick()}>
+          <div className="text-white flex gap-6 items-center ml-[100px] cursor-pointer">
+            <h4 className="font-Robotto text-xl"> logout</h4>
+            <i className="fa-solid fa-right-from-bracket"></i>
           </div>
         </Link>
       </div>

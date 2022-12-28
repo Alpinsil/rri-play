@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import arr from '../api/data';
 import { useRouter } from 'next/router';
+import Navbar from '../../components/navbar';
 
 export async function getServerSideProps() {
   const res = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books');
@@ -63,6 +64,7 @@ export default function Index({ books }) {
       <Head>
         <title>Admin Page</title>
       </Head>
+      <Navbar />
       <Link href="/admin/post">
         <button className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">Create New Audiobook</button>
       </Link>

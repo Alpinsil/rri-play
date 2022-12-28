@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Formbook from '../../components/formbook';
 import { useRouter } from 'next/router';
 import arr from '../api/data';
+import Navbar from '../../components/navbar';
 
 export default function MyForm() {
   const [sformData, setFormData] = useState({});
@@ -55,6 +56,8 @@ export default function MyForm() {
       <Head>
         <title>Create new Book</title>
       </Head>
+
+      <Navbar />
 
       <Formbook isLoading={isLoading} handleChange={handleChange} handleSubmit={handleSubmit} />
     </>

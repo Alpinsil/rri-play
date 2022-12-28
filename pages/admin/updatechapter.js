@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import arr from '../api/data';
+import Navbar from '../../components/navbar';
 
 export default function MyForm({ data, bookId }) {
   const [sformData, setFormData] = useState({});
@@ -61,6 +62,7 @@ export default function MyForm({ data, bookId }) {
       <Head>
         <title>Edit Chapter</title>
       </Head>
+      <Navbar />
       <div className="w-full max-w-lg mx-auto flex flex-wrap mt-7">
         <form className="bg-[#191624] shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
           {form.map((data) => (
