@@ -19,7 +19,7 @@ export default function MyComponent(props) {
 
   const router = useRouter();
   useEffect(() => {
-    if (localStorage.getItem('login-access') !== arr) {
+    if (sessionStorage.getItem('login-access') !== arr) {
       router.push('/login');
     }
   });
@@ -41,7 +41,7 @@ export default function MyComponent(props) {
       formData.set(key, value);
     }
 
-    const token = localStorage.getItem('key-jwt');
+    const token = sessionStorage.getItem('key-jwt');
 
     fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}/update`, {
       method: 'PUT',
@@ -65,7 +65,7 @@ export default function MyComponent(props) {
   };
 
   const handleDeleteClick = (id) => {
-    const token = localStorage.getItem('key-jwt');
+    const token = sessionStorage.getItem('key-jwt');
     fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${data.id}/chapters/${id}/delete`, {
       method: 'DELETE',
       headers: {

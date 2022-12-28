@@ -33,8 +33,8 @@ export default function MyForm() {
       .then((data) => {
         setIsLoading(false);
         if (data.jwt) {
-          localStorage.setItem('key-jwt', data.jwt.access_token);
-          localStorage.setItem('login-access', arr);
+          sessionStorage.setItem('key-jwt', data.jwt.access_token);
+          sessionStorage.setItem('login-access', arr);
           router.push('/admin');
         } else {
           console.log(data);

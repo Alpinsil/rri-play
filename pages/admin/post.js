@@ -20,7 +20,7 @@ export default function MyForm() {
   const router = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem('login-access') !== arr) {
+    if (sessionStorage.getItem('login-access') !== arr) {
       router.push('/login');
     }
   });
@@ -34,7 +34,7 @@ export default function MyForm() {
       formData.set(key, value);
     }
 
-    const token = localStorage.getItem('key-jwt');
+    const token = sessionStorage.getItem('key-jwt');
 
     fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books', {
       method: 'POST',

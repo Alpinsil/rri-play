@@ -19,7 +19,7 @@ export default function Index({ books }) {
   const [error, setError] = useState();
 
   useEffect(() => {
-    if (localStorage.getItem('login-access') !== arr) {
+    if (sessionStorage.getItem('login-access') !== arr) {
       router.push('/login');
     }
   });
@@ -28,7 +28,7 @@ export default function Index({ books }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async (id) => {
-    const token = localStorage.getItem('key-jwt');
+    const token = sessionStorage.getItem('key-jwt');
     setIsLoading(true);
     if (id) {
       try {
