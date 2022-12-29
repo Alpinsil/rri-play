@@ -71,17 +71,14 @@ export default function MyComponent(props) {
       <div className="flex flex-wrap justify-center mx-auto mb-8">
         <DetailCard onClickBookmark={onClickBookmark} data={data} bookmark={bookmark} />
         <div className="w-full">
-          <div className="flex justify-center mt-7 gap-10 flex-wrap w-full mx-auto mb-8">
+          <h1 className="text-white text-2xl text-center mt-6 mb-3">List Chapters</h1>
+          <ul className="w-full flex justify-center flex-wrap mb-11 gap-3">
             {data.chapters ? (
-              data.chapters.map((ar, i) => (
-                <div key={ar.id} className="relative">
-                  <Chaptercardtwo title={ar.title} desc={ar.description} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} setIsPlaying={setIsPlaying} mediaPath={ar.media_path} isSongChange={isSongPause} />
-                </div>
-              ))
+              data.chapters.map((ar, i) => <Chaptercardtwo title={ar.title} desc={ar.description} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} setIsPlaying={setIsPlaying} mediaPath={ar.media_path} key={ar.id} />)
             ) : (
               <div className="text-white text-center text-lg">Belum ada list chapter di Series ini</div>
             )}
-          </div>
+          </ul>
         </div>
       </div>
     </>

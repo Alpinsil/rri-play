@@ -4,10 +4,13 @@ import Formbook from '../../components/formbook';
 import { useRouter } from 'next/router';
 import arr from '../api/data';
 import Navbar from '../../components/navbar';
+import FlashMessage from '../../components/flashmessage';
 
 export default function MyForm() {
   const [sformData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [text, setText] = useState(false);
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -48,6 +51,20 @@ export default function MyForm() {
       .then((data) => {
         console.log(data);
         setIsLoading(false);
+        if (data.message === 'Book Created') {
+          setIsVisible(true);
+          setText(['Sukses menambahkan buku baru']);
+          setTimeout(() => {
+            setIsVisible(false);
+          }, 3000);
+        }
+        if (data.error) {
+          setIsVisible(true);
+          setText([data.error.title, 'periksa inputan', true]);
+          setTimeout(() => {
+            setIsVisible(false);
+          }, 3000);
+        }
       });
   };
 
@@ -58,6 +75,8 @@ export default function MyForm() {
       </Head>
 
       <Navbar />
+
+      <FlashMessage isVisible={isVisible} text={text} />
 
       <Formbook isLoading={isLoading} handleChange={handleChange} handleSubmit={handleSubmit} />
     </>

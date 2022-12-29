@@ -92,8 +92,8 @@ export default function MyComponent(props) {
       .then((response) => response.json())
       .then((dat) => {
         const filter = data.chapters.filter((n) => n.id !== id);
-        setShowModal(false);
         setChapter(filter);
+        setShowModal(false);
       });
   };
 
