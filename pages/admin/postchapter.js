@@ -5,9 +5,16 @@ import Link from 'next/link';
 import arr from '../api/data';
 import Navbar from '../../components/navbar';
 
+export async function getServerSideProps(context) {
+  const { query } = context;
+  const { id } = query;
+  return { props: { id } };
+}
+
 export default function MyForm(props) {
   const [sformData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [postCreated, setPostCreated] = useState(false);
   const router = useRouter();
   const { id } = props;
 
@@ -34,7 +41,6 @@ export default function MyForm(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const { id } = router.query;
     const formData = new FormData();
 
     for (const [key, value] of Object.entries(sformData)) {
@@ -54,6 +60,12 @@ export default function MyForm(props) {
       .then((data) => {
         console.log(data);
         setIsLoading(false);
+        if (data.message && data.message == 'Chapter Created') {
+          setPostCreated(true);
+          setTimeout(() => {
+            setPostCreated(false);
+          }, 5000);
+        }
       });
   };
 
@@ -63,10 +75,14 @@ export default function MyForm(props) {
         <title>Add New Chapter</title>
       </Head>
       <Navbar />
-      <Link href={{ pathname: 'detail', query: { id } }} className="fixed text-white text-2xl top-32 left-80 z-50 bg-sky-900 px-3 py-2 rounded-md hover:bg-sky-500 cursor-pointer">
-        <i className="fa-solid fa-arrow-left"></i>
-      </Link>
-      <div className="w-full max-w-lg mx-auto flex flex-wrap mt-11">
+
+      <div className={`p-4 mb-4 text-sm text-green-700 bg-green-100 mx-auto rounded-lg max-w-sm mt-4 ${postCreated ? 'opacity-100' : 'opacity-0'} transition-all duration-200 dark:bg-green-200 dark:text-green-800`} role="alert">
+        <span className="font-bold">Berhasil Menambahkan Chapter</span>
+      </div>
+      <div className="w-full max-w-lg mx-auto justify-center  flex flex-wrap mt-16 relative ">
+        <Link href={{ pathname: 'detail', query: { id } }} className="absolute text-white text-2xl -top-10 left-0 z-50 bg-sky-900 px-3 py-2 rounded-md hover:bg-sky-500 cursor-pointer">
+          <i className="fa-solid fa-arrow-left"></i>
+        </Link>
         <form className="bg-[#191624] shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
           {form.map((data) => (
             <div className="mb-4" key={data.nama}>
@@ -111,10 +127,3 @@ export default function MyForm(props) {
     </>
   );
 }
-
-MyForm.getInitialProps = async (ctx) => {
-  const { query } = ctx;
-  const { id } = query;
-
-  return { id };
-};

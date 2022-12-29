@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { songsdata } from '../components/music/audio';
 
 export default function Chaptercard({ desc, title, number, isPlaying, onClick, id, setIsPlaying, mediaPath, isSongPause }) {
-  const music = songsdata.filter((song, i) => i == id);
   const [songTime, setSongTime] = useState(0);
   const audioElem = useRef();
   let [s, setS] = useState('0:00');
@@ -49,7 +47,7 @@ export default function Chaptercard({ desc, title, number, isPlaying, onClick, i
           </p>
         </div>
       </div>
-      <audio ref={audioElem} src={mediaPath || music[0].url} onTimeUpdate={onPlaying} />
+      <audio ref={audioElem} src={mediaPath} onTimeUpdate={onPlaying} />
 
       <i
         className={`fa-solid ${isPlaying === id ? 'fa-pause' : 'fa-play'} border-black text-white text-5xl shadow-xl cursor-pointer text-center group-hover:opacity-100 transition-all duration-300 `}

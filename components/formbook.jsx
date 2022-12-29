@@ -77,7 +77,7 @@ export default function Formbook({ content, isLoading, handleSubmit, handleChang
                 name={form[3].nama}
                 value={category}
               />
-            </div>{' '}
+            </div>
           </>
         ) : (
           form.map((data) => (

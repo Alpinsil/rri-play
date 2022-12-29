@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Chaptercard from '../components/chaptercard';
-import Image from 'next/image';
 import Navbar from '../components/navbar';
+import DetailCard from '../components/detailcard';
+import Chaptercardtwo from '../components/chaptercardtwo';
+
+export async function getServerSideProps(context) {
+  const { query } = context;
+  const { id } = query;
+  const pros = await fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}`);
+  const res = await pros.json();
+  const data = res.data;
+
+  return { props: { data, id } };
+}
 
 export default function MyComponent(props) {
   const { data, id } = props;
-  const [error, setError] = useState();
+  console.log(data);
   const [bookmark, setBookmark] = useState();
   const [isPlaying, setIsPlaying] = useState();
   const [isSongPause, setIsSongPause] = useState(false);
-
-  const handleError = () => {
-    setError('An error occurred while loading the image');
-  };
-
-  const handleLoad = () => {
-    setError(null);
-  };
 
   useEffect(() => {
     const storage = JSON.parse(localStorage.getItem('rri-audiobook-sumenep'));
@@ -67,30 +69,13 @@ export default function MyComponent(props) {
       <Navbar />
 
       <div className="flex flex-wrap justify-center mx-auto mb-8">
-        <div className="relative w-full h-[331px] flex justify-center overflow-hidden">
-          <div className="w-full h-full bg-black absolute z-10 opacity-50" />
-          <Image src={error ? '/Image_1.webp' : data.cover_image} alt={data.id} width={142} height={212} priority className="rounded-xl w-full h-[800px] absolute -bottom-10 blur-[2px]" onLoad={handleLoad} onError={handleError} />
-          <div className="absolute mt-9 z-10 blur-none">
-            <Image src={error ? '/Image_1.webp' : data.cover_image} alt={data.id} width={142} height={212} priority className="rounded-xl w-[150px] h-[210px]" />
-            <div className="flex justify-center mt-2 gap-9 text-white text-5xl">
-              <i
-                className={`fa-solid fa-bookmark ${bookmark && 'text-sky-800'}  cursor-pointer border-black`}
-                onClick={() => {
-                  onClickBookmark(data.id, data);
-                }}
-              ></i>
-            </div>
-          </div>
-        </div>
-        <h1 className="text-white text-center text-3xl mt-3">{data.title}</h1>
-        <p className="text-slate-400 text-center text-lg mt-3 mb-6">{data.desc}</p>
-
+        <DetailCard onClickBookmark={onClickBookmark} data={data} bookmark={bookmark} />
         <div className="w-full">
           <div className="flex justify-center mt-7 gap-10 flex-wrap w-full mx-auto mb-8">
             {data.chapters ? (
               data.chapters.map((ar, i) => (
                 <div key={ar.id} className="relative">
-                  <Chaptercard number={i} title={ar.title} desc={ar.desc} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} setIsPlaying={setIsPlaying} mediaPath={ar.media_path} isSongChange={isSongPause} />
+                  <Chaptercardtwo title={ar.title} desc={ar.description} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} setIsPlaying={setIsPlaying} mediaPath={ar.media_path} isSongChange={isSongPause} />
                 </div>
               ))
             ) : (
@@ -102,13 +87,3 @@ export default function MyComponent(props) {
     </>
   );
 }
-
-MyComponent.getInitialProps = async (ctx) => {
-  const { query } = ctx;
-  const { id } = query;
-  const pros = await fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}`);
-  const res = await pros.json();
-  const data = res.data;
-
-  return { data, id };
-};

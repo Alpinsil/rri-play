@@ -4,6 +4,17 @@ import Head from 'next/head';
 import arr from '../api/data';
 import Navbar from '../../components/navbar';
 
+export async function getServerSideProps(context) {
+  const { query } = context;
+  const { bookId, chapterId } = query;
+  const pros = await fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${bookId}`);
+  const res = await pros.json();
+  const dat = res.data.chapters.filter((ar) => ar.id === parseInt(chapterId))[0];
+  const data = dat || false;
+
+  return { props: { data, bookId } };
+}
+
 export default function MyForm({ data, bookId }) {
   const [sformData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +45,6 @@ export default function MyForm({ data, bookId }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const { id } = router.query;
     const formData = new FormData();
 
     for (const [key, value] of Object.entries(sformData)) {
@@ -110,12 +120,3 @@ export default function MyForm({ data, bookId }) {
     </>
   );
 }
-
-MyForm.getInitialProps = async (ctx) => {
-  const { query } = ctx;
-  const { bookId, chapterId } = query;
-  const pros = await fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${bookId}`);
-  const res = await pros.json();
-  const data = res.data.chapters.filter((ar) => ar.id === parseInt(chapterId))[0];
-  return { data, bookId };
-};

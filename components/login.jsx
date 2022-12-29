@@ -5,9 +5,9 @@ export default function LoginCard({ handleSubmit, handleChange, isLoading }) {
   ];
   return (
     <div className="w-full max-w-lg mx-auto flex flex-wrap mt-7 justify-center">
-      <form className="bg-[#191624] shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+      <form className="bg-[#191624] shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 w-full flex flex-wrap gap-8" onSubmit={handleSubmit}>
         {form.map((data) => (
-          <div className="mb-4" key={data.nama}>
+          <div className="mb-4 w-full" key={data.nama}>
             <label className="block text-white text-sm tracking-widest font-bold mb-2 capitalize" htmlFor={data.nama}>
               {data.alias || data.nama}
             </label>
