@@ -70,7 +70,15 @@ export default function MyForm({ data, bookId }) {
         console.log(data);
         setIsLoading(false);
         setIsVisible(true);
-        setText([data.message, '']);
+        if (data.error) {
+          if (data.error.title) {
+            setText([data.message, data.error.title, true]);
+          } else {
+            setText([data.message, 'error', true]);
+          }
+        } else {
+          setText([data.message, '']);
+        }
         setTimeout(() => {
           setIsVisible(false);
         }, 3000);
