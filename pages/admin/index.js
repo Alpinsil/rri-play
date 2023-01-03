@@ -101,7 +101,7 @@ export default function Index({ books }) {
             <div className="max-w-sm w-full lg:w-1/2 border  rounded-lg shadow-md bg-gray-800 border-gray-700 flex items-center flex-wrap" key={book.id}>
               <Image className="rounded-t-lg mx-auto h-[100px] w-[80px]" src={error ? '/Image_1.webp' : book.cover_image} alt={book.title} width={100} height={150} onError={handleError} onLoad={handleLoad} />
               <div className="p-5">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{book.title}</h5>
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{book.title}</h5>
                 <p className="mb-3 font-normal text-gray-400">{book.category}</p>
                 <Link
                   href={{
