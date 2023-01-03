@@ -15,6 +15,7 @@ export default function MyForm(props) {
   const [sformData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [postCreated, setPostCreated] = useState(false);
+  const [error, setError] = useState();
   const router = useRouter();
   const { id } = props;
 
@@ -65,6 +66,12 @@ export default function MyForm(props) {
           setTimeout(() => {
             setPostCreated(false);
           }, 5000);
+        } else {
+          setPostCreated(true);
+          setError(`${data.message} ${data.error}`);
+          setTimeout(() => {
+            setPostCreated(false);
+          }, 5000);
         }
       });
   };
@@ -76,8 +83,8 @@ export default function MyForm(props) {
       </Head>
       <Navbar />
 
-      <div className={`p-4 mb-4 text-sm text-green-700 bg-green-100 mx-auto rounded-lg max-w-sm mt-4 ${postCreated ? 'opacity-100' : 'opacity-0'} transition-all duration-200 dark:bg-green-200 dark:text-green-800`} role="alert">
-        <span className="font-bold">Berhasil Menambahkan Chapter</span>
+      <div className={`p-4 mb-4 text-sm mx-auto rounded-lg max-w-sm mt-4 ${postCreated ? 'opacity-100' : 'opacity-0'} transition-all duration-200 ${error ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'}`} role="alert">
+        <span className="font-bold">{error || 'Berhasil Menambahkan Chapter'}</span>
       </div>
       <div className="w-full max-w-lg mx-auto justify-center  flex flex-wrap mt-16 relative ">
         <Link href={{ pathname: 'detail', query: { id } }} className="absolute text-white text-2xl -top-10 left-0 z-50 bg-sky-900 px-3 py-2 rounded-md hover:bg-sky-500 cursor-pointer">

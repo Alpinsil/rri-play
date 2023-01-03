@@ -1,12 +1,11 @@
-export default function Formbook({ content, isLoading, handleSubmit, handleChange }) {
+export default function Formbook({ content, isLoading, handleSubmit, handleChange, categoriest }) {
   const form = [
     { nama: 'title', type: 'text' },
     { nama: 'summary', type: 'text-area' },
     { nama: 'cover_image', type: 'file', alias: 'cover image' },
-    { nama: 'category_id', type: 'number', alias: 'category id' },
   ];
   if (content) {
-    var { title, summary, category, setCategory, setTitle, setSummary } = content;
+    var { title, summary, setCategory, category, setTitle, setSummary } = content;
   }
 
   return (
@@ -63,53 +62,55 @@ export default function Formbook({ content, isLoading, handleSubmit, handleChang
               />
             </div>
             <div className="mb-4">
-              <label className="block text-white text-sm tracking-widest font-bold mb-2 capitalize" htmlFor={form[3].nama}>
-                {form[3].alias || form[3].nama}
+              <label className="block text-white text-sm tracking-widest font-bold mb-2 capitalize" htmlFor="category_id">
+                Category
               </label>
-              <input
-                className={`shadow appearance-none border rounded w-full py-2 px-3  ${form[3].nama === 'cover_image' ? 'text-white' : 'text-black'} leading-tight focus:outline-none focus:shadow-outline`}
-                id={form[3].nama}
-                type="text"
-                placeholder={form[3].alias || form[3].nama}
-                autoComplete="off"
-                onKeyUp={handleChange}
-                onChange={(e) => setCategory(e.target.value)}
-                name={form[3].nama}
-                value={category}
-              />
+              <select name="category_id" id="category_id" placeholder="role" className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" onChange={(e) => setCategory(e.target.value)} onClick={handleChange} value={category}>
+                {categoriest.data.map((n) => (
+                  <option value={n.id} key={n.id}>
+                    {n.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </>
         ) : (
-          form.map((data) => (
-            <div className="mb-4" key={data.nama}>
-              <label className="block text-white text-sm tracking-widest font-bold mb-2 capitalize" htmlFor={data.nama}>
-                {data.alias || data.nama}
+          <>
+            {form.map((data) => (
+              <div className="mb-4" key={data.nama}>
+                <label className="block text-white text-sm tracking-widest font-bold mb-2 capitalize" htmlFor={data.nama}>
+                  {data.alias || data.nama}
+                </label>
+                <input
+                  className={`shadow appearance-none border rounded w-full py-2 px-3  ${data.nama === 'cover_image' ? 'text-white' : 'text-black'} leading-tight focus:outline-none focus:shadow-outline`}
+                  id={data.nama}
+                  type={data.type}
+                  placeholder={data.alias || data.nama}
+                  autoComplete="off"
+                  onChange={handleChange}
+                  name={data.nama}
+                  required
+                />
+              </div>
+            ))}
+            <div className="mb-4">
+              <label className="block text-white text-sm tracking-widest font-bold mb-2 capitalize" htmlFor="category_id">
+                Category
               </label>
-              <input
-                className={`shadow appearance-none border rounded w-full py-2 px-3  ${data.nama === 'cover_image' ? 'text-white' : 'text-black'} leading-tight focus:outline-none focus:shadow-outline`}
-                id={data.nama}
-                type={data.type}
-                placeholder={data.alias || data.nama}
-                autoComplete="off"
-                onChange={handleChange}
-                name={data.nama}
-                required
-              />
+              <select name="category_id" id="category_id" placeholder="role" className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" onChange={(e) => setCategory(e.target.value)} onClick={handleChange} value={category}>
+                {categoriest.data.map((n) => (
+                  <option value={n.id} key={n.id}>
+                    {n.name}
+                  </option>
+                ))}
+              </select>
             </div>
-          ))
+          </>
         )}
 
         <div className="flex items-center justify-between">
           <button type="submit">
-            {isLoading ? (
-              <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-wait">
-                please wait &nbsp; <i className="fa-solid fa-spinner fa-spin-pulse fa-spin-reverse" disabled></i>
-              </button>
-            ) : (
-              <button className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                submit
-              </button>
-            )}
+            <p className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">{isLoading ? 'please wait' : 'submit'}</p>
           </button>
         </div>
       </form>

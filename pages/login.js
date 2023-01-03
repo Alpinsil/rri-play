@@ -28,7 +28,6 @@ export default function MyForm() {
   const handleSubmit = (event) => {
     setIsLoading(true);
     event.preventDefault();
-
     fetch('https://go-rriaudiobook-server-production.up.railway.app/api/login', {
       method: 'POST',
       body: JSON.stringify(formData),
@@ -56,6 +55,15 @@ export default function MyForm() {
             setLoginPage(false);
           }, 5000);
         }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setLoginPage(true);
+        console.log(err);
+        setText(['error fetching', 'server error', true]);
+        setTimeout(() => {
+          setLoginPage(false);
+        }, 5000);
       });
   };
 

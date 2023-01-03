@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import arr from '../api/data';
 import Navbar from '../../components/navbar';
 import AdminChapter from '../../components/adminchapter';
+import FlashMessage from '../../components/flashmessage';
 
 export async function getServerSideProps(context) {
   const { query } = context;
@@ -13,26 +14,31 @@ export async function getServerSideProps(context) {
   const pros = await fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}`);
   const res = await pros.json();
   const data = res.data;
+  const cat = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/categories');
+  const categoriest = await cat.json();
   return {
     props: {
       data,
       id,
+      categoriest,
     },
   };
 }
 
 export default function MyComponent(props) {
-  const { data, id } = props;
+  const { data, id, categoriest } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [chapter, setChapter] = useState(data.chapters);
   const [sformData, setFormData] = useState({});
   const [title, setTitle] = useState(data.title);
   const [summary, setSummary] = useState(data.summary);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [category, setCategory] = useState(data.category);
+  const valCategory = categoriest.data.find((n) => n.name == data.category).id;
+  const [category, setCategory] = useState(valCategory);
   const [showModal, setShowModal] = useState();
-
   const content = { title, setTitle, summary, setSummary, category, setCategory };
+  const [isVisible, setIsVisible] = useState();
+  const [text, setText] = useState();
 
   const router = useRouter();
   useEffect(() => {
@@ -70,6 +76,12 @@ export default function MyComponent(props) {
       .then((response) => response.json())
       .then((data) => {
         setIsLoading(false);
+        console.log(data.message);
+        setText([data.message], '');
+        setIsVisible(true);
+        setTimeout(() => {
+          setIsVisible(false);
+        }, 3000);
       });
   };
 
@@ -91,9 +103,8 @@ export default function MyComponent(props) {
     })
       .then((response) => response.json())
       .then((dat) => {
-        const filter = data.chapters.filter((n) => n.id !== id);
-        setChapter(filter);
         setShowModal(false);
+        router.reload();
       });
   };
 
@@ -103,8 +114,10 @@ export default function MyComponent(props) {
         <title>edit detail</title>
       </Head>
       <Navbar />
+      <FlashMessage isVisible={isVisible} text={text} />
+
       <div className="flex flex-wrap justify-center mx-auto mb-8">
-        <Formbook content={content} isLoading={isLoading} handleSubmit={handleSubmit} handleChange={handleChange} data={data} />
+        <Formbook content={content} isLoading={isLoading} handleSubmit={handleSubmit} handleChange={handleChange} data={data} categoriest={categoriest} />
 
         <div className="w-full">
           <h2 className="text-white text-center text-2xl mt-12">Chapter</h2>

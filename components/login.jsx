@@ -25,15 +25,7 @@ export default function LoginCard({ handleSubmit, handleChange, isLoading }) {
         ))}
         <div className="flex items-center justify-between">
           <button type="submit">
-            {isLoading ? (
-              <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-wait">
-                please wait &nbsp; <i className="fa-solid fa-spinner fa-spin-pulse fa-spin-reverse" disabled></i>
-              </button>
-            ) : (
-              <button className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                submit
-              </button>
-            )}
+            <p className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">{isLoading ? 'please wait' : 'submit'}</p>
           </button>
         </div>
       </form>

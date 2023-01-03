@@ -10,20 +10,27 @@ import Cookies from 'js-cookie';
 
 export async function getServerSideProps(context) {
   context.res.setHeader('Set-Cookie', 'alvin=maulana');
-  const res = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books');
-  const books = await res.json();
-  if (5 + 2 < 2) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  } else {
+  try {
+    const res = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books');
+    const books = await res.json();
     return {
       props: { books },
     };
+  } catch (err) {
+    return {
+      props: { books: false },
+    };
   }
+
+  // if (5 + 2 < 2) {
+  //   return {
+  //     redirect: {
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //   };
+  // } else {
+  // }
 }
 
 export default function Index({ books }) {
@@ -80,6 +87,14 @@ export default function Index({ books }) {
     setError(null);
   };
 
+  if (!books) {
+    return (
+      <>
+        <Navbar />
+        <div className="text-white">error</div>
+      </>
+    );
+  }
   return (
     <>
       <Head>

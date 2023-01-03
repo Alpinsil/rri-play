@@ -6,7 +6,15 @@ import arr from '../api/data';
 import Navbar from '../../components/navbar';
 import FlashMessage from '../../components/flashmessage';
 
-export default function MyForm() {
+export async function getServerSideProps(context) {
+  const cat = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/categories');
+  const categoriest = await cat.json();
+  return {
+    props: { categoriest },
+  };
+}
+
+export default function MyForm(props) {
   const [sformData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -78,7 +86,7 @@ export default function MyForm() {
 
       <FlashMessage isVisible={isVisible} text={text} />
 
-      <Formbook isLoading={isLoading} handleChange={handleChange} handleSubmit={handleSubmit} />
+      <Formbook isLoading={isLoading} handleChange={handleChange} handleSubmit={handleSubmit} categoriest={props.categoriest} />
     </>
   );
 }
