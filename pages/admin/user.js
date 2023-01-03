@@ -27,6 +27,7 @@ export default function User(props) {
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [isLoading, setIsLoading] = useState();
   const router = useRouter();
+  const [sformData, setFormData] = useState();
   const users = props.user.data;
 
   const handleChange = (event) => {
@@ -66,6 +67,31 @@ export default function User(props) {
       }
     }
   };
+
+  const handleSubmit = (event) => {
+    setIsLoading(true);
+    event.preventDefault();
+
+    const token = sessionStorage.getItem('key-jwt');
+    console.log(sformData );
+
+    // fetch('https://go-rriaudiobook-server-production.up.railway.app/api/user', {
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(sformData),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
+  };
+
   if (users) {
     return (
       <>
@@ -93,10 +119,10 @@ export default function User(props) {
                   <td className="py-4 px-6">{user.full_name}</td>
                   <td className="py-4 px-6">{user.roles}</td>
                   <td className="py-4  flex gap-5">
-                    <button className="font-medium text-blue-500 hover:underline" onClick={() => setShowModalEdit(user)}>
+                    <button className={`font-medium  text-blue-500 hover:underline ${user.roles === 'Admin' && 'hidden'} `} onClick={() => setShowModalEdit(user)}>
                       Edit
                     </button>
-                    <button className="font-medium text-red-600 hover:underline" onClick={() => setShowModal(user)}>
+                    <button className={`font-medium ${user.roles === 'Admin' && 'hidden'}  text-red-600 hover:underline`} onClick={() => setShowModal(user)}>
                       {isLoading ? 'please wait' : 'delete'}
                     </button>
                   </td>
@@ -106,7 +132,7 @@ export default function User(props) {
           </table>
         </div>
         <DeleteModal setShowModal={setShowModal} showModal={showModal} handleDeleteClick={handleDelete} />
-        <UserCard showModal={showModalEdit} setShowModal={setShowModalEdit} handleChange={handleChange} />
+        <UserCard showModal={showModalEdit} setShowModal={setShowModalEdit} handleChange={handleChange} handleSubmit={handleSubmit} />
       </>
     );
   } else {

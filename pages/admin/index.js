@@ -22,15 +22,6 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // if (5 + 2 < 2) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // } else {
-  // }
 }
 
 export default function Index({ books }) {

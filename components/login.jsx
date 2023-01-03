@@ -16,7 +16,6 @@ export default function LoginCard({ handleSubmit, handleChange, isLoading }) {
               id={data.nama}
               type={data.type}
               placeholder={data.alias || data.nama}
-              autoComplete="off"
               onChange={handleChange}
               name={data.nama}
               required
