@@ -59,6 +59,7 @@ export default function Formbook({ content, isLoading, handleSubmit, handleChang
                 autoComplete="off"
                 onChange={handleChange}
                 name={form[2].nama}
+                accept="image/*"
               />
             </div>
             <div className="mb-4">
@@ -90,6 +91,7 @@ export default function Formbook({ content, isLoading, handleSubmit, handleChang
                   onChange={handleChange}
                   name={data.nama}
                   required
+                  accept="image/*"
                 />
               </div>
             ))}
