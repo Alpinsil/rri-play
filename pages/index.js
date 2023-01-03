@@ -7,7 +7,6 @@ export async function getServerSideProps() {
   try {
     const res = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books');
     const books = await res.json();
-
     return {
       props: { books },
     };

@@ -6,10 +6,8 @@ import { useRouter } from 'next/router';
 import Navbar from '../../components/navbar';
 import DeleteModal from '../../components/deleteModal';
 import arr from '../api/data';
-import Cookies from 'js-cookie';
 
 export async function getServerSideProps(context) {
-  context.res.setHeader('Set-Cookie', 'alvin=maulana');
   try {
     const res = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books');
     const books = await res.json();
@@ -21,7 +19,6 @@ export async function getServerSideProps(context) {
       props: { books: false },
     };
   }
-
 }
 
 export default function Index({ books }) {
@@ -44,7 +41,6 @@ export default function Index({ books }) {
 
   const { data } = books;
   const [isLoading, setIsLoading] = useState(false);
-  const [listBook, setListBook] = useState(data);
 
   const handleDelete = async (id) => {
     const token = sessionStorage.getItem('key-jwt');
@@ -102,8 +98,8 @@ export default function Index({ books }) {
         </Link>
       </div>
       <div className="w-full mx-auto flex gap-6 mt-4 justify-center mb-4 flex-wrap">
-        {listBook ? (
-          listBook.map((book) => (
+        {data ? (
+          data.map((book) => (
             <div className="max-w-sm w-full lg:w-1/2 border  rounded-lg shadow-md bg-gray-800 border-gray-700 flex items-center flex-wrap" key={book.id}>
               <Image className="rounded-t-lg mx-auto h-[100px] w-[80px]" src={error ? '/Image_1.webp' : book.cover_image} alt={book.title} width={100} height={150} onError={handleError} onLoad={handleLoad} />
               <div className="p-5">

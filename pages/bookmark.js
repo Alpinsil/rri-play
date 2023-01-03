@@ -19,7 +19,7 @@ export default function Bookmark() {
       ) : (
         <div className="flex justify-center mt-7 gap-10 flex-wrap w-full mx-auto">
           {data.map((ar) => (
-            <Cardcomp key={ar.id} thumbnail={ar.thumbnail} title={ar.title} id={ar.id} desc={ar.desc} />
+            <Cardcomp key={ar.id} thumbnail={ar.cover_image} title={ar.title} id={ar.id} desc={ar.category} />
           ))}
         </div>
       )}
