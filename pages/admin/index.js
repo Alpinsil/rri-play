@@ -87,7 +87,7 @@ export default function Index({ books }) {
       </Head>
       <Navbar />
       <div className="flex justify-center gap-6">
-        <Link href="/admin/user" className="order-last">
+        <Link href="/admin/user" className={`${!admin && 'hidden'} order-last`}>
           <button className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">User Page</button>
         </Link>
 
