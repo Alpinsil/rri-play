@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import arr from './api/data';
 import Navbar from '../components/navbar';
 import FlashMessage from '../components/flashmessage';
+import Cookies from 'js-cookie';
 
 export default function MyForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +43,8 @@ export default function MyForm() {
         if (data.jwt) {
           setText(['berhasil login', 'Anda akan diarahkan ke page admin']);
           sessionStorage.setItem('key-jwt', data.jwt.access_token);
+          sessionStorage.setItem('role', data.data.roles);
+          Cookies.set('myjwt', data.jwt.access_token);
           sessionStorage.setItem('login-access', arr);
           setTimeout(() => {
             setLoginPage(false);

@@ -3,11 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import arr from '../pages/api/data';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [login, setLogin] = useState(false);
-  const [nama, setNama] = useState('admin');
   const navLinks = [
     { link: '/', nama: 'Beranda' },
     { link: '/bookmark', nama: 'Bookmark' },
@@ -26,7 +26,7 @@ export default function Navbar() {
   ];
 
   const handleClick = () => {
-    setNama('login');
+    Cookies.remove('myjwt');
     sessionStorage.removeItem('jwt-key');
     sessionStorage.removeItem('login-access');
     setLogin(false);

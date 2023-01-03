@@ -2,27 +2,45 @@ import Image from 'next/image';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import arr from '../api/data';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/navbar';
 import DeleteModal from '../../components/deleteModal';
+import arr from '../api/data';
+import Cookies from 'js-cookie';
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  context.res.setHeader('Set-Cookie', 'alvin=maulana');
   const res = await fetch('https://go-rriaudiobook-server-production.up.railway.app/api/books');
   const books = await res.json();
-  return {
-    props: { books },
-  };
+  if (5 + 2 < 2) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: { books },
+    };
+  }
 }
 
 export default function Index({ books }) {
   const router = useRouter();
   const [error, setError] = useState();
   const [showModal, setShowModal] = useState();
+  const [admin, setAdmin] = useState();
 
   useEffect(() => {
     if (sessionStorage.getItem('login-access') !== arr) {
       router.push('/login');
+    }
+    const admin = sessionStorage.getItem('role');
+    if (admin === 'Admin') {
+      setAdmin(true);
+    } else {
+      setAdmin(false);
     }
   });
 
@@ -44,8 +62,7 @@ export default function Index({ books }) {
         if (res) {
           setIsLoading(false);
           setShowModal(!showModal);
-          const filter = data.filter((n) => n.id !== id);
-          setListBook(filter);
+          router.reload();
         } else {
           throw new Error('An error occurred while deleting the resource');
         }
@@ -69,9 +86,15 @@ export default function Index({ books }) {
         <title>Admin Page</title>
       </Head>
       <Navbar />
-      <Link href="/admin/post">
-        <button className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">Create New Audiobook</button>
-      </Link>
+      <div className="flex justify-center gap-6">
+        <Link href="/admin/user" className="order-last">
+          <button className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">User Page</button>
+        </Link>
+
+        <Link href="/admin/post">
+          <button className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">Create New Audiobook</button>
+        </Link>
+      </div>
       <div className="w-full mx-auto flex gap-6 mt-4 justify-center mb-4 flex-wrap">
         {listBook ? (
           listBook.map((book) => (

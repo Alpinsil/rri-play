@@ -7,23 +7,31 @@ import Chaptercardtwo from '../components/chaptercardtwo';
 export async function getServerSideProps(context) {
   const { query } = context;
   const { id } = query;
+  const url = context.req.headers.referer;
   const pros = await fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}`);
   const res = await pros.json();
   const data = res.data;
-
-  return { props: { data, id } };
+  if (data) {
+    return { props: { data, id, url } };
+  } else {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 }
 
 export default function MyComponent(props) {
   const { data, id } = props;
-  console.log(data);
   const [bookmark, setBookmark] = useState();
   const [isPlaying, setIsPlaying] = useState();
   const [isSongPause, setIsSongPause] = useState(false);
 
   useEffect(() => {
     const storage = JSON.parse(localStorage.getItem('rri-audiobook-sumenep'));
-    const bookmark = storage.filter((ar) => ar.id == id);
+    const bookmark = storage ? storage.filter((ar) => ar.id == id) : [];
     if (bookmark.length) {
       setBookmark(true);
     }
@@ -60,27 +68,33 @@ export default function MyComponent(props) {
       setIsPlaying(false);
     }
   };
+  if (data) {
+    return (
+      <>
+        <Head>
+          <title>edit detail</title>
+        </Head>
+        <Navbar />
 
-  return (
-    <>
-      <Head>
-        <title>edit detail</title>
-      </Head>
-      <Navbar />
-
-      <div className="flex flex-wrap justify-center mx-auto mb-8">
-        <DetailCard onClickBookmark={onClickBookmark} data={data} bookmark={bookmark} />
-        <div className="w-full">
-          <h1 className="text-white text-2xl text-center mt-6 mb-3">List Chapters</h1>
-          <ul className="w-full flex justify-center flex-wrap mb-11 gap-3">
-            {data.chapters ? (
-              data.chapters.map((ar, i) => <Chaptercardtwo title={ar.title} desc={ar.description} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} setIsPlaying={setIsPlaying} mediaPath={ar.media_path} key={ar.id} />)
-            ) : (
-              <div className="text-white text-center text-lg">Belum ada list chapter di Series ini</div>
-            )}
-          </ul>
+        <div className="flex flex-wrap justify-center mx-auto mb-8">
+          <DetailCard onClickBookmark={onClickBookmark} data={data} bookmark={bookmark} />
+          <div className="w-full">
+            <h1 className="text-white text-2xl text-center mt-6 mb-3">List Chapters</h1>
+            <ul className="w-full flex justify-center flex-wrap mb-11 gap-3">
+              {data.chapters ? (
+                data.chapters.map((ar, i) => <Chaptercardtwo title={ar.title} desc={ar.description} onClick={onClickPlay} isPlaying={isPlaying} id={ar.id} setIsPlaying={setIsPlaying} mediaPath={ar.media_path} key={ar.id} />)
+              ) : (
+                <div className="text-white text-center text-lg">Belum ada list chapter di Series ini</div>
+              )}
+            </ul>
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  } else {
+    <>
+      <Navbar />
+      <div className="mt-4 text-white text-center text-2xl">Not found</div>;
+    </>;
+  }
 }
