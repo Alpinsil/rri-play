@@ -27,7 +27,7 @@ export default function Navbar() {
 
   const handleClick = () => {
     Cookies.remove('myjwt');
-    sessionStorage.removeItem('jwt-key');
+    sessionStorage.removeItem('key-jwt');
     sessionStorage.removeItem('login-access');
     setLogin(false);
     router.push('/login');

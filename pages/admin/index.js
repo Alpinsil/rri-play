@@ -26,6 +26,8 @@ export default function Index({ books }) {
   const [error, setError] = useState();
   const [showModal, setShowModal] = useState();
   const [admin, setAdmin] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const { data } = books;
 
   useEffect(() => {
     if (sessionStorage.getItem('login-access') !== arr) {
@@ -38,9 +40,6 @@ export default function Index({ books }) {
       setAdmin(false);
     }
   });
-
-  const { data } = books;
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async (id) => {
     const token = sessionStorage.getItem('key-jwt');
@@ -89,12 +88,11 @@ export default function Index({ books }) {
       </Head>
       <Navbar />
       <div className="flex justify-center gap-6">
-        <Link href="/admin/user" className={`${!admin && 'hidden'} order-last`}>
-          <button className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">User Page</button>
+        <Link href="/admin/user" className={`${!admin && 'hidden'} order-last px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600`}>
+          User Page
         </Link>
-
-        <Link href="/admin/post">
-          <button className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">Create New Audiobook</button>
+        <Link href="/admin/post" className="px-4 py-3 bg-sky-900 text-white mt-3 mx-auto flex rounded-xl hover:bg-sky-600">
+          Create New Audiobook
         </Link>
       </div>
       <div className="w-full mx-auto flex gap-6 mt-4 justify-center mb-4 flex-wrap">

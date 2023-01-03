@@ -97,7 +97,7 @@ export default function Formbook({ content, isLoading, handleSubmit, handleChang
               <label className="block text-white text-sm tracking-widest font-bold mb-2 capitalize" htmlFor="category_id">
                 Category
               </label>
-              <select name="category_id" id="category_id" placeholder="role" className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" onChange={(e) => setCategory(e.target.value)} onClick={handleChange} value={category}>
+              <select name="category_id" id="category_id" placeholder="role" className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" onChange={handleChange}>
                 {categoriest.data.map((n) => (
                   <option value={n.id} key={n.id}>
                     {n.name}

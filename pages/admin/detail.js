@@ -58,15 +58,17 @@ export default function MyComponent(props) {
 
   const handleSubmit = (event) => {
     setIsLoading(true);
+    console.log(id);
     event.preventDefault();
-    const formData = new FormData();
+    const form = document.querySelector('form');
+    const formData = new FormData(form);
     for (const [key, value] of Object.entries(sformData)) {
       formData.set(key, value);
     }
 
     const token = sessionStorage.getItem('key-jwt');
 
-    fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/${id}/update`, {
+    fetch(`https://go-rriaudiobook-server-production.up.railway.app/api/books/2/update`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -82,6 +84,15 @@ export default function MyComponent(props) {
         setTimeout(() => {
           setIsVisible(false);
         }, 3000);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setText(['Error', 'Failed to Update', true]);
+        setIsVisible(true);
+        setTimeout(() => {
+          setIsVisible(false);
+        }, 3000);
+        console.log(err);
       });
   };
 
@@ -118,7 +129,6 @@ export default function MyComponent(props) {
 
       <div className="flex flex-wrap justify-center mx-auto mb-8">
         <Formbook content={content} isLoading={isLoading} handleSubmit={handleSubmit} handleChange={handleChange} data={data} categoriest={categoriest} />
-
         <div className="w-full">
           <h2 className="text-white text-center text-2xl mt-12">Chapter</h2>
           <Link href={{ pathname: '/admin/postchapter', query: { id } }}>

@@ -64,6 +64,7 @@ export default function MyForm(props) {
           setText(['Sukses menambahkan buku baru']);
           setTimeout(() => {
             setIsVisible(false);
+            router.back();
           }, 3000);
         }
         if (data.error) {
